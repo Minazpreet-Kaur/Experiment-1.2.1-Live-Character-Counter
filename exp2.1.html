@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Character Counter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: whitesmoke;
+    }
+
+    textarea {
+      width: 300px;
+      height: 120px;
+      padding: 10px;
+      font-size: 14px;
+      background-color: lightpink;
+}
+    
+
+    p {
+      margin-top: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h3>Live Character Counter</h3>
+
+  <textarea id="text" oninput="countChars()"></textarea>
+  <p>Characters: <span id="count">0</span></p>
+
+  <script>
+    function countChars() {
+      let text = document.getElementById("text").value;
+      document.getElementById("count").innerText = text.length;
+    }
+  </script>
+
+</body>
+</html>
