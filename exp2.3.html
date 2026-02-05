@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Freehand SVG Drawing</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background: #fff;
+    width: 92vw;
+    height: 90vh;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h2 {
+    text-align: center;
+    margin: 5px 0 10px;
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+
+  button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    background: #185a9d;
+    color: white;
+    cursor: pointer;
+  }
+
+  input[type="color"] {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+  }
+
+  svg {
+    flex: 1;
+    background: #f4f6fb;
+    border-radius: 10px;
+    border: 2px dashed #aaa;
+    cursor: crosshair;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>SVG Drawing Tool</h2>
+
+  <div class="toolbar">
+    <input type="color" id="color">
+    <button onclick="undo()">Undo</button>
+    <button onclick="clearCanvas()">Clear</button>
+  </div>
+
+  <svg id="canvas"></svg>
+</div>
+
+<script>
+let svg = document.getElementById("canvas");
+let color = document.getElementById("color");
+let drawing = false;
+let path;
+
+svg.addEventListener("mousedown", e => {
+  drawing = true;
+  path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("stroke", color.value);
+  path.setAttribute("stroke-width", "3");
+  path.setAttribute("fill", "none");
+  path.setAttribute("d", M ${e.offsetX} ${e.offsetY});
+  svg.appendChild(path);
+});
+
+svg.addEventListener("mousemove", e => {
+  if (!drawing) return;
+  let d = path.getAttribute("d");
+  path.setAttribute("d", d + ` L ${e.offsetX} ${e.offsetY}`);
+});
+
+svg.addEventListener("mouseup", () => drawing = false);
+svg.addEventListener("mouseleave", () => drawing = false);
+
+function undo() {
+  if (svg.lastChild) svg.removeChild(svg.lastChild);
+}
+
+function clearCanvas() {
+  svg.innerHTML = "";
+}
+</script>
+
+</body>
+</html>
